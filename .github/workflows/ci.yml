@@ -3,44 +3,34 @@ name: Python CI
 on:
   push:
     branches:
-      - main  # Запускати CI для гілки main
+      - main
   pull_request:
     branches:
-      - main  # Запускати CI для pull request до гілки main
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Тестування на останній версії Ubuntu
-
-    strategy:
-      matrix:
-        python-version: [3.12]  # Вказуємо версію Python для тестування
-
+  build:
+    runs-on: ubuntu-latest
     steps:
-      # 1. Крок для перевірки коду з репозиторію
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v3
 
-      # 2. Крок для налаштування Python
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.12'
 
-      # 3. Крок для встановлення залежностей
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Крок для запуску тестів
-      - name: Run tests
+      - name: Run tests with pytest
         run: |
-          pytest src/test_main.py --html=results.html --self-contained-html --disable-warnings
+          pytest --maxfail=1 --disable-warnings -q --html=pytest-report.html
 
-      # 5. Крок для завантаження результатів тестів
-      - name: Upload test results
-        uses: actions/upload-artifact@v2
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
         with:
-          name: test-results
-          path: results.html
+          name: pytest-results
+          path: pytest-report.html
