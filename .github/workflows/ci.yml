@@ -27,14 +27,10 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          pytest --maxfail=1 --disable-warnings -q --html=pytest-report.html
-
-      - name: Check if pytest-report.html exists
-        run: |
-          ls -la pytest-report.html
+          pytest --maxfail=1 --disable-warnings -q
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: pytest-results
           path: pytest-report.html
