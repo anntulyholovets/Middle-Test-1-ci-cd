@@ -34,7 +34,7 @@ jobs:
           ls -la pytest-report.html
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: pytest-results
           path: pytest-report.html
