@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v2
         with:
           python-version: '3.12'
 
@@ -29,8 +29,12 @@ jobs:
         run: |
           pytest --maxfail=1 --disable-warnings -q --html=pytest-report.html
 
+      - name: Check if pytest-report.html exists
+        run: |
+          ls -la pytest-report.html
+
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: pytest-results
           path: pytest-report.html
